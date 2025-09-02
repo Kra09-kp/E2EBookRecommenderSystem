@@ -3,5 +3,5 @@ pandas
 numpy
 uvicorn
 fastapi
+PyYAML
 setuptools
-.e

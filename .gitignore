@@ -209,3 +209,5 @@ __marimo__/
 
 *.zip
 artifacts/
+data/
+.pkl

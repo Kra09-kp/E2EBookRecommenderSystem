@@ -1,11 +1,14 @@
 import os
 import sys
-import logging 
+import logging  
+import datetime
 
 logging_str = "[%(asctime)s|(%(levelname)s)| File: %(module)s | Message: %(message)s]"
 
+# get current date
+today_date = datetime.datetime.now().strftime("%d-%m-%Y")
 log_dir = "logs"
-log_file = os.path.join(log_dir, "running_logs.log")
+log_file = os.path.join(log_dir, f"{today_date}.log")
 os.makedirs(log_dir, exist_ok=True)
 
 

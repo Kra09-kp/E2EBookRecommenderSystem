@@ -1,7 +1,7 @@
 import setuptools
 
 
-SRC_REPO="BookRecommendationSystem"
+SRC_REPO="book_recommender"
 AUTHOR_USER_NAME = "Kra09-kp"
 AUTHOR_EMAIL="kirtipogra@gmail.com"
 REPO_NAME="E2EBookRecommenderSystem"

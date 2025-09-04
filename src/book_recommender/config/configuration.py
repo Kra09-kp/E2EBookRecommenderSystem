@@ -2,7 +2,10 @@ import os
 import sys
 from book_recommender.constants import *
 from book_recommender.utils.util import read_yaml_file
-from book_recommender.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
+from book_recommender.entity.config_entity import (DataIngestionConfig, 
+                                                    DataValidationConfig, 
+                                                    DataTransformationConfig,
+                                                    ModelTrainingConfig)
 from book_recommender.exception.exception_handler import BookRecommenderException
 from book_recommender.logger.log import logger
 from pathlib import Path
@@ -84,6 +87,29 @@ class WebAppConfiguration:
             )
             logger.info(f"Data Transformation config: {data_transformation_config_response}")
             return data_transformation_config_response
+        
+        except Exception as e:
+            raise BookRecommenderException(e,sys) from e #type:ignore
+        
+    def get_model_training_config(self) -> ModelTrainingConfig:
+        try:
+            artifact_dir = self.config_info['artifact_config']['artifacts_dir']
+            dataset_dir = self.config_info['data_ingestion_config']['dataset_dir']
+
+            transformed_data_file_path = os.path.join(artifact_dir,dataset_dir,
+                                                     self.config_info["data_transformation_config"]["transformed_data_dir"],
+                                                     "book_pivot.pkl")
+            trained_model_dir = os.path.join(artifact_dir, 
+                                          self.config_info['model_training_config']['trained_model_dir'])
+            model_file = self.config_info['model_training_config']['model_file']
+
+            model_training_config_response = ModelTrainingConfig(
+                transformed_data_file_path= Path(transformed_data_file_path),
+                trained_model_dir= Path(trained_model_dir),
+                trained_model_name= model_file
+            )
+            logger.info(f"Model Training config: {model_training_config_response}")
+            return model_training_config_response
         
         except Exception as e:
             raise BookRecommenderException(e,sys) from e #type:ignore

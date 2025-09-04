@@ -20,3 +20,9 @@ class DataValidationConfig:
 class DataTransformationConfig:
     transformed_data_dir: Path
     clean_data_file_path: Path
+
+@dataclass(frozen=True)
+class ModelTrainingConfig:
+    transformed_data_file_path:Path
+    trained_model_dir: Path
+    trained_model_name: str

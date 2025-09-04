@@ -12,7 +12,6 @@ class DataValidation:
             Data Validation Component
         """
         try:
-            logger.info(f"{'>>'*20} Data Validation log started {'<<'*20}")
             self.config = config.get_data_validation_config()
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore

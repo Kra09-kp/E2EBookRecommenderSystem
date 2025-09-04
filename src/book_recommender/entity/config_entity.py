@@ -14,3 +14,9 @@ class DataValidationConfig:
     serialized_object_dir: Path
     books_file: str
     ratings_file: str
+
+
+@dataclass(frozen=True)
+class DataTransformationConfig:
+    transformed_data_dir: Path
+    clean_data_file_path: Path

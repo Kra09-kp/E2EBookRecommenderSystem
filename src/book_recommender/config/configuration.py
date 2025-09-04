@@ -2,7 +2,7 @@ import os
 import sys
 from book_recommender.constants import *
 from book_recommender.utils.util import read_yaml_file
-from book_recommender.entity.config_entity import DataIngestionConfig, DataValidationConfig
+from book_recommender.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
 from book_recommender.exception.exception_handler import BookRecommenderException
 from book_recommender.logger.log import logger
 from pathlib import Path
@@ -65,5 +65,25 @@ class WebAppConfiguration:
             logger.info(f"Data Validation config: {data_validation_config_response}")
             return data_validation_config_response
 
+        except Exception as e:
+            raise BookRecommenderException(e,sys) from e #type:ignore
+    
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        try:
+            artifact_dir = self.config_info['artifact_config']['artifacts_dir']
+            dataset_dir = self.config_info['data_ingestion_config']['dataset_dir']
+            data_transformation_dir = os.path.join(artifact_dir,dataset_dir)
+
+            transformed_data_dir = os.path.join(data_transformation_dir, 
+                                          self.config_info['data_transformation_config']['transformed_data_dir'])
+            clean_data_file_path = os.path.join(artifact_dir, dataset_dir,
+                                          self.config_info['data_validation_config']['clean_data_dir'],'clean_data.csv')
+            data_transformation_config_response = DataTransformationConfig(
+                transformed_data_dir= Path(transformed_data_dir),
+                clean_data_file_path= Path(clean_data_file_path)
+            )
+            logger.info(f"Data Transformation config: {data_transformation_config_response}")
+            return data_transformation_config_response
+        
         except Exception as e:
             raise BookRecommenderException(e,sys) from e #type:ignore

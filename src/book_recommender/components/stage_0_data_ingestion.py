@@ -14,7 +14,6 @@ class DataIngestion:
             Data Ingestion Component
         """
         try:
-            logger.info(f"--> Data Ingestion log started")
             self.config = config.get_data_ingestion_config()
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
@@ -74,6 +73,7 @@ class DataIngestion:
             Initiate data ingestion process
         """
         try:
+            logger.info(f"--> Data Ingestion log started")
             self.download_dataset()
             self.extract_usefull_files()
             logger.info(f"--> Data Ingestion log completed")

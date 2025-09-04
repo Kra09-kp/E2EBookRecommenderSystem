@@ -1,6 +1,6 @@
 import yaml
 import sys
-from book_recommender.exception.exception_handler import WebAppException
+from book_recommender.exception.exception_handler import BookRecommenderException
 
 def read_yaml_file(file_path: str) -> dict:
     """

@@ -1,0 +1,8 @@
+artifact_config:
+  artifacts_dir: artifacts
+
+data_ingestion_config:
+  dataset_download_url:  arashnic/book-recommendation-dataset
+  dataset_dir: dataset
+  ingested_dir: ingested_data
+  raw_data_dir: raw_data

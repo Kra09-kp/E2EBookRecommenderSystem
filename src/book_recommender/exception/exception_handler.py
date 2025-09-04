@@ -5,7 +5,7 @@ import datetime
 
 
 
-class WebAppException(Exception):
+class BookRecommenderException(Exception):
     """
     Base class for all custom exceptions in the web application.
     """
@@ -15,7 +15,7 @@ class WebAppException(Exception):
         error_detail: The sys module's error detail.
         """
         super().__init__(error_message)
-        self.error_message = WebAppException.error_message_detail(error_message,error_detail=error_detail)
+        self.error_message = BookRecommenderException.error_message_detail(error_message,error_detail=error_detail)
 
     @staticmethod
     def error_message_detail(error: Exception, error_detail: sys) -> str: # type: ignore
@@ -43,7 +43,7 @@ class WebAppException(Exception):
         return error_message
     
     def __repr__(self) -> str:
-        return WebAppException.__name__.__str__()
+        return BookRecommenderException.__name__.__str__()
 
     def __str__(self) -> str:
         return self.error_message

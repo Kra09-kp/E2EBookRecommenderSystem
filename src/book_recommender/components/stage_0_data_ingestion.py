@@ -14,7 +14,7 @@ class DataIngestion:
             Data Ingestion Component
         """
         try:
-            logger.info(f"{'>>'*20} Data Ingestion log started {'<<'*20}")
+            logger.info(f"--> Data Ingestion log started")
             self.config = config.get_data_ingestion_config()
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
@@ -76,7 +76,7 @@ class DataIngestion:
         try:
             self.download_dataset()
             self.extract_usefull_files()
-            logger.info(f"{'>>'*20} Data Ingestion log completed {'<<'*20}")
+            logger.info(f"--> Data Ingestion log completed")
 
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore

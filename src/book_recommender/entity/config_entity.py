@@ -7,3 +7,10 @@ class DataIngestionConfig:
     dataset_url: str
     raw_data_dir: Path
     ingested_dir: Path
+
+@dataclass(frozen=True)
+class DataValidationConfig:
+    clean_data_dir: Path
+    serialized_object_dir: Path
+    books_file: str
+    ratings_file: str

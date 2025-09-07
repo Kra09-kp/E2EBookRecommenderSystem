@@ -5,7 +5,8 @@ from book_recommender.utils.util import read_yaml_file
 from book_recommender.entity.config_entity import (DataIngestionConfig, 
                                                     DataValidationConfig, 
                                                     DataTransformationConfig,
-                                                    ModelTrainingConfig)
+                                                    ModelTrainingConfig,
+                                                    RecommendationConfig)
 from book_recommender.exception.exception_handler import BookRecommenderException
 from book_recommender.logger.log import logger
 from pathlib import Path
@@ -113,3 +114,41 @@ class WebAppConfiguration:
         
         except Exception as e:
             raise BookRecommenderException(e,sys) from e #type:ignore
+    
+    def get_recommendation_config(self) -> RecommendationConfig:
+        try:
+            artifact_dir = self.config_info["artifact_config"]["artifacts_dir"]
+            dataset_dir = self.config_info["data_ingestion_config"]["dataset_dir"]
+
+            trained_model_name = self.config_info["recommendation_config"]["trained_model_name"]
+            
+            trained_model_path = os.path.join(artifact_dir,
+                                                self.config_info["model_training_config"]["trained_model_dir"],
+                                                trained_model_name)
+
+            book_pivot_serialized_file = os.path.join(artifact_dir,
+                                                self.config_info["data_validation_config"]["serialized_object_dir"],
+                                                self.config_info["recommendation_config"]["book_pivot_serialized_file"])
+            
+            final_rating_serialized_file = os.path.join(artifact_dir,
+                                                self.config_info["data_validation_config"]["serialized_object_dir"],       
+                                                self.config_info["recommendation_config"]["final_rating_serialized_file"])
+            
+            book_name_serialized_file = os.path.join(artifact_dir,
+                                                self.config_info["data_validation_config"]["serialized_object_dir"],       
+                                                self.config_info["recommendation_config"]["book_name_serialized_file"])
+            
+            recommendation_config_response = RecommendationConfig(
+                book_pivot_serialized_file= Path(book_pivot_serialized_file),
+                final_rating_serialized_file= Path(final_rating_serialized_file),
+                book_name_serialized_file= Path(book_name_serialized_file),
+                trained_model_path= Path(trained_model_path),
+                trained_model_name= trained_model_name,
+                num_recommendations= self.config_info["recommendation_config"]["num_recommendations"]
+            )
+            logger.info(f"Recommendation config: {recommendation_config_response}")
+            return recommendation_config_response
+        
+        except Exception as e:
+            raise BookRecommenderException(e,sys) from e #type:ignore
+                                              

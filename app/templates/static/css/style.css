@@ -1,0 +1,82 @@
+.dropdown-menu {
+  max-height: 250px;
+  overflow-y: auto;
+  width: 100%;
+  }
+
+.highlight {
+  background-color: #ffeaa7;
+  }
+#suggestions {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+#suggestions li {
+  cursor: pointer;
+}
+#suggestions li.active {
+  background-color: #0d6efd;
+  color: white;
+}
+#suggestions li.active-suggestion {
+  background-color: #0d6efd; /* Bootstrap primary */
+  color: white;
+  border-radius: 4px;
+}
+
+.recommendation-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.img-container {
+  position: relative;
+  height: 350px;       /* card ka ek fix height rakh lo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa; /* halka grey background for empty space */
+  overflow: hidden;
+}
+
+.img-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* show full poster */
+}
+
+
+
+.img-container:hover img {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6); /* semi-transparent black */
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+}
+
+.img-container:hover .overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-text {
+  font-size: 0.9rem;
+  font-weight: bold;
+}

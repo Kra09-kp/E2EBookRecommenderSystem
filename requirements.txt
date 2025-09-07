@@ -6,3 +6,4 @@ fastapi
 PyYAML
 setuptools
 kaggle
+jinja2

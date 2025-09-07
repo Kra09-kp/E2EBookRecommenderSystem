@@ -26,3 +26,12 @@ class ModelTrainingConfig:
     transformed_data_file_path:Path
     trained_model_dir: Path
     trained_model_name: str
+
+@dataclass(frozen=True)
+class RecommendationConfig:
+    book_pivot_serialized_file: Path
+    final_rating_serialized_file: Path
+    book_name_serialized_file: Path
+    trained_model_path: Path
+    trained_model_name: str
+    num_recommendations: int

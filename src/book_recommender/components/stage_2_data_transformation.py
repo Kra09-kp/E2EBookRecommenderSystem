@@ -52,3 +52,10 @@ class DataTransformation:
             logger.info("--> Data transformation completed")
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
+        
+if __name__ == "__main__":
+    try:
+        data_transformation = DataTransformation()
+        data_transformation.initiate_data_transformation()
+    except Exception as e:
+        raise BookRecommenderException(e, sys) from e #type:ignore

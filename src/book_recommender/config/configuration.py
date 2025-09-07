@@ -17,11 +17,12 @@ class WebAppConfiguration:
             self.config_info = read_yaml_file(file_path=config_file_path)
         
         except Exception as e:
-            raise WebAppException(e,sys) from e #type:ignore
+            raise BookRecommenderException(e,sys) from e #type:ignore
         
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         try:
             artifact_dir = self.config_info['artifact_config']['artifacts_dir']
+            os.makedirs(artifact_dir, exist_ok=True)
             dataset_dir = self.config_info['data_ingestion_config']['dataset_dir']
             data_ingestion_dir = os.path.join(artifact_dir,dataset_dir)
             dataset_download_url = self.config_info['data_ingestion_config']['dataset_download_url']
@@ -118,7 +119,6 @@ class WebAppConfiguration:
     def get_recommendation_config(self) -> RecommendationConfig:
         try:
             artifact_dir = self.config_info["artifact_config"]["artifacts_dir"]
-            dataset_dir = self.config_info["data_ingestion_config"]["dataset_dir"]
 
             trained_model_name = self.config_info["recommendation_config"]["trained_model_name"]
             

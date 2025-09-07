@@ -23,10 +23,10 @@ class DataIngestion:
             Download dataset from Kaggle
         """
         try:
+            
             dataset_url = self.config.dataset_url
             raw_data_dir = self.config.raw_data_dir
             os.makedirs(raw_data_dir, exist_ok=True)
-            ingested_dir = self.config.ingested_dir
 
 
             # Initialize API
@@ -55,7 +55,6 @@ class DataIngestion:
             raw_data_dir = self.config.raw_data_dir
             ingested_dir = self.config.ingested_dir
             os.makedirs(ingested_dir, exist_ok=True)
-            os.makedirs(raw_data_dir, exist_ok=True)
 
     
             logger.info(f"📦 Extracting useful files from {self.config.raw_data_dir}")
@@ -81,3 +80,11 @@ class DataIngestion:
 
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
+
+
+if __name__ == "__main__":
+    try:
+        obj = DataIngestion()
+        obj.initiate_data_ingestion()
+    except Exception as e:
+        raise BookRecommenderException(e, sys) from e #type:ignore

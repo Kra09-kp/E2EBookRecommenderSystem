@@ -5,8 +5,8 @@ stages:
     - src/book_recommender/components/stage_0_data_ingestion.py
     - config/config.yaml
     outs:
-    - artifacts/dataset/ingested_data
     - artifacts/dataset/raw_data
+    - artifacts/dataset/ingested_data
   data_validation:
     cmd: python src/book_recommender/components/stage_1_data_validation.py
     deps:

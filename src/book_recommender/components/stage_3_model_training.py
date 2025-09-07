@@ -45,3 +45,12 @@ class ModelTrainer:
             logger.info("--> Model training completed")
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
+        
+
+
+if __name__ == "__main__":
+    try:
+        obj = ModelTrainer()
+        obj.initiate_model_training()
+    except Exception as e:
+        raise BookRecommenderException(e, sys) from e #type:ignore

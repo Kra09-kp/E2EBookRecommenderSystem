@@ -1,0 +1,100 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/book_recommender/components/stage_0_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a15a4886f7d0f191ca2abdcee8b7560e
+      size: 767
+    - path: src/book_recommender/components/stage_0_data_ingestion.py
+      hash: md5
+      md5: 3f0f71fef9244c50824c8c97e082d666
+      size: 3126
+    outs:
+    - path: artifacts/dataset/ingested_data
+      hash: md5
+      md5: 25f2c8a4dd41dac0b5c6ccfc717a86f9.dir
+      size: 106944965
+      nfiles: 3
+    - path: artifacts/dataset/raw_data
+      hash: md5
+      md5: 5febd7c3721e10f65d30edd9459a067a.dir
+      size: 107513011
+      nfiles: 6
+  data_validation:
+    cmd: python src/book_recommender/components/stage_1_data_validation.py
+    deps:
+    - path: artifacts/dataset/ingested_data
+      hash: md5
+      md5: 25f2c8a4dd41dac0b5c6ccfc717a86f9.dir
+      size: 106944965
+      nfiles: 3
+    - path: config/config.yaml
+      hash: md5
+      md5: a15a4886f7d0f191ca2abdcee8b7560e
+      size: 767
+    - path: src/book_recommender/components/stage_1_data_validation.py
+      hash: md5
+      md5: c88277ba600d34bd913d2559ca69636b
+      size: 3794
+    outs:
+    - path: artifacts/dataset/clean_data
+      hash: md5
+      md5: 9d5be6fb2cb04293bdc6c426ec6e5597.dir
+      size: 18911826
+      nfiles: 1
+    - path: artifacts/serialized_objects
+      hash: md5
+      md5: 947dc0b138e370a844e686f9b1622a3f.dir
+      size: 8428969
+      nfiles: 1
+  data_transformation:
+    cmd: python src/book_recommender/components/stage_2_data_transformation.py
+    deps:
+    - path: artifacts/dataset/clean_data
+      hash: md5
+      md5: 9d5be6fb2cb04293bdc6c426ec6e5597.dir
+      size: 18911826
+      nfiles: 1
+    - path: artifacts/serialized_objects
+      hash: md5
+      md5: fd72957c0703d7f5d5e85ab073365167.dir
+      size: 43910416
+      nfiles: 3
+    - path: config/config.yaml
+      hash: md5
+      md5: a15a4886f7d0f191ca2abdcee8b7560e
+      size: 767
+    - path: src/book_recommender/components/stage_2_data_transformation.py
+      hash: md5
+      md5: ee19a166a0c754ea1bc032c950f0edd7
+      size: 2703
+    outs:
+    - path: artifacts/dataset/transformed_data
+      hash: md5
+      md5: 88eab3737d052400148d021f64a231b7.dir
+      size: 35443564
+      nfiles: 1
+  model_training:
+    cmd: python src/book_recommender/components/stage_3_model_training.py
+    deps:
+    - path: artifacts/dataset/transformed_data
+      hash: md5
+      md5: 88eab3737d052400148d021f64a231b7.dir
+      size: 35443564
+      nfiles: 1
+    - path: config/config.yaml
+      hash: md5
+      md5: a15a4886f7d0f191ca2abdcee8b7560e
+      size: 767
+    - path: src/book_recommender/components/stage_3_model_training.py
+      hash: md5
+      md5: cb262eb492d87a5572becbd213c9b7f1
+      size: 2140
+    outs:
+    - path: artifacts/trained_model
+      hash: md5
+      md5: 81b4138158a1b973f3624d60256c8e1b.dir
+      size: 477826
+      nfiles: 1

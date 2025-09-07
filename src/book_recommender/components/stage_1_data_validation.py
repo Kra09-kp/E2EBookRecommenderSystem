@@ -73,3 +73,10 @@ class DataValidation:
             logger.info("--> Data validation completed")
         except Exception as e:
             raise BookRecommenderException(e, sys) from e #type:ignore
+        
+if __name__ == "__main__":
+    try:
+        data_validation = DataValidation()
+        data_validation.initiate_data_validation()
+    except Exception as e:
+        raise BookRecommenderException(e, sys) from e #type:ignore

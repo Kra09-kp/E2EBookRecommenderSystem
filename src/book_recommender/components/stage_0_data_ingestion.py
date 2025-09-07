@@ -55,6 +55,7 @@ class DataIngestion:
             raw_data_dir = self.config.raw_data_dir
             ingested_dir = self.config.ingested_dir
             os.makedirs(ingested_dir, exist_ok=True)
+            os.makedirs(raw_data_dir, exist_ok=True)
 
     
             logger.info(f"📦 Extracting useful files from {self.config.raw_data_dir}")

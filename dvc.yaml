@@ -2,36 +2,36 @@ stages:
   data_ingestion:
     cmd: python src/book_recommender/components/stage_0_data_ingestion.py
     deps:
-      - src/book_recommender/components/stage_0_data_ingestion.py
-      - config/config.yaml
-    outs: 
-      - artifacts/dataset/ingested_data
-      - artifacts/dataset/raw_data
-  data_validation:  
+    - src/book_recommender/components/stage_0_data_ingestion.py
+    - config/config.yaml
+    outs:
+    - artifacts/dataset/ingested_data
+    - artifacts/dataset/raw_data
+  data_validation:
     cmd: python src/book_recommender/components/stage_1_data_validation.py
-    deps: 
-      - src/book_recommender/components/stage_1_data_validation.py
-      - config/config.yaml
-      - artifacts/dataset/ingested_data
+    deps:
+    - src/book_recommender/components/stage_1_data_validation.py
+    - config/config.yaml
+    - artifacts/dataset/ingested_data
 
-    outs: 
-      - artifacts/dataset/clean_data
-      - artifacts/dataset/serialized_objects
+    outs:
+    - artifacts/dataset/clean_data
+    - artifacts/serialized_objects
   data_transformation:
     cmd: python src/book_recommender/components/stage_2_data_transformation.py
-    deps: 
-      - src/book_recommender/components/stage_2_data_transformation.py
-      - config/config.yaml
-      - artifacts/dataset/clean_data
-      - artifacts/dataset/serialized_objects
-    outs: 
-      - artifacts/dataset/transformed_data
-  model_trainer:
+    deps:
+    - src/book_recommender/components/stage_2_data_transformation.py
+    - config/config.yaml
+    - artifacts/dataset/clean_data
+    - artifacts/serialized_objects
+    outs:
+    - artifacts/dataset/transformed_data
+
+  model_training:
     cmd: python src/book_recommender/components/stage_3_model_training.py
-    deps: 
-      - src/book_recommender/components/stage_3_model_training.py
-      - config/config.yaml
-      - artifacts/dataset/transformed_data
-    outs: 
-      - artifacts/models/trained_model
- 
+    deps:
+    - src/book_recommender/components/stage_3_model_training.py
+    - config/config.yaml
+    - artifacts/dataset/transformed_data
+    outs:
+    - artifacts/trained_model

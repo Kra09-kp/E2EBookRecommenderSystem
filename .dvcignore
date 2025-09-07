@@ -1,0 +1,7 @@
+# .dvcignore
+__pycache__
+*.pyc
+.ipynb_checkpoints
+.vscode
+.idea
+*.log

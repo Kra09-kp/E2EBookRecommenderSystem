@@ -1,4 +1,3 @@
-````markdown name=README.md
 # 📚 End-to-End Book Recommendation System
 
 [🚀 Live Demo](https://e2e-book-recommendation-system.onrender.com)
@@ -107,4 +106,3 @@ This project is open source. See the LICENSE file for details.
 - Built with ❤️ for learning and sharing.
 
 ---
-````

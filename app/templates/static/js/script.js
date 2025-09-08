@@ -1,4 +1,47 @@
 let books = [];  // global books list
+let loadingInterval = null;
+
+
+function showLoading(messages) {
+  const modalElement = document.getElementById('loadingModal');
+  const loadingMsg = document.getElementById('loadingMsg');
+  
+  // Stop previous interval
+  if (loadingInterval) clearInterval(loadingInterval);
+  
+  let index = 0;
+  loadingMsg.innerText = messages[index];
+
+  // Show modal
+  if (!window._loadingModal) {
+    window._loadingModal = new bootstrap.Modal(modalElement, {backdrop: 'static', keyboard: false});
+  }
+  window._loadingModal.show();
+
+  // Only rotate if multiple messages
+  if (messages.length > 1) {
+    loadingInterval = setInterval(() => {
+      index = (index + 1) % messages.length;
+      loadingMsg.innerText = messages[index];
+    }, 5000);
+  } else {
+    loadingInterval = null; // single message, no rotation
+  }
+}
+
+function hideLoading() {
+  // Stop interval
+  if (loadingInterval) {
+    clearInterval(loadingInterval);
+    loadingInterval = null;
+  }
+
+  // Hide modal
+  if (window._loadingModal) {
+    window._loadingModal.hide();
+  }
+}
+
 
 // Fetch books once from backend
 async function fetchBooks() {
@@ -85,6 +128,30 @@ function updateActive(items) {
   }
 });
 
+async function train(){
+  try{
+    showLoading([
+      "⚙️ Preparing dataset...",
+      "📚 Collecting book titles & authors...",
+      "🔍 Extracting features from descriptions...",
+      "🧠 Training the recommendation model...",
+      "📊 Evaluating accuracy & fine-tuning...",
+      "⏳ Almost done, polishing recommendations...",
+    ]);
+
+    // backend pe request bhejo jo jobs la raha hai
+    const res = await fetch(`/train`, { method: "POST" });
+    if (!res.ok) throw new Error("Something went wrong, Try again!");
+
+  } catch (err) {
+    hideLoading();
+    showLoading(["❌ Error: " + err.message]);
+    setTimeout(hideLoading, 3000);
+
+  } finally {
+    hideLoading(); // agar error hua toh modal band ho jaye
+  }
+}
 
 /* --------- fetch & display recommendations (example) --------- */   
 

@@ -1,12 +1,12 @@
 import os
 import shutil
 import sys
-import zipfile
 from kaggle.api.kaggle_api_extended import KaggleApi
 from book_recommender.logger.log import logger
 from book_recommender.config.configuration import WebAppConfiguration
 from book_recommender.exception.exception_handler import BookRecommenderException
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class DataIngestion:
     def __init__(self, config = WebAppConfiguration()):

@@ -12,7 +12,7 @@ templates = Jinja2Templates(directory="app/templates")
 router = APIRouter()
 training_pipeline = TrainingPipeline()
 
-@router.get("/train")
+@router.post("/train")
 async def train_model():
     try:
         logger.info("Starting the training pipeline")

@@ -7,4 +7,6 @@ PyYAML
 setuptools
 kaggle
 jinja2
+dotenv
 dvc
+-e .

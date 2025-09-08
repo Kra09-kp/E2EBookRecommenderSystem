@@ -46,11 +46,11 @@ jobs:
 
       - name: 🏗️ Build Docker image
         run: |
-          docker build -t kirtipogra/e2e-job-recommendation-system:latest .
+          docker build -t kirtipogra/e2e-book-recommendation-system:latest .
 
       - name: 🚀 Push image to DockerHub
         run: |
-          docker push kirtipogra/e2e-job-recommendation-system:latest
+          docker push kirtipogra/e2e-book-recommendation-system:latest
 
 
       # - name: 📡 Trigger Render Deploy Hook

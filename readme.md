@@ -3,14 +3,13 @@
 [🚀 Live Demo](https://e2e-book-recommendation-system.onrender.com)
 
 Welcome to the **E2E Book Recommender System**!  
-This repository offers a full-stack, production-ready book recommendation engine. Leveraging collaborative and content-based filtering, it suggests the best books for you—complete with eye-catching covers. Built with Python, modern ML tools, and a beautiful web app frontend.  
+This repository offers a full-stack, production-ready book recommendation engine. Leveraging collaborative filtering, it suggests the best books for you—complete with eye-catching covers. Built with Python, modern ML tools, and a beautiful web app frontend.  
 Perfect for learning, experimenting, and real-world deployment!  
 
 ---
 
 ## ✨ Features
 
-- 🤝 **Hybrid Filtering**: Combines collaborative & content-based recommendations for superior results.
 - ⚡ **Fast Interactive Web UI**: Type a title, get instant, visually rich book suggestions.
 - 🖼️ **Book Covers Included**: Recommendations come with cover images for a delightful UX.
 - 🛠️ **Modular Data Pipeline**: Clean stages for data ingestion, validation, training, and serving.
@@ -86,13 +85,6 @@ E2EBookRecommenderSystem/
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome!  
-Feel free to open [issues](https://github.com/Kra09-kp/E2EBookRecommenderSystem/issues) or submit PRs for suggestions and improvements.  
-Let’s make the best book recommender together! 🚀
-
----
 
 ## 🪪 License
 

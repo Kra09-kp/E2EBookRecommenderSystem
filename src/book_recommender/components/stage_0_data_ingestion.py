@@ -74,7 +74,7 @@ class DataIngestion:
         """
         try:
             logger.info(f"--> Data Ingestion log started")
-            # self.download_dataset()
+            self.download_dataset()
             self.extract_usefull_files()
             logger.info(f"--> Data Ingestion log completed")
 

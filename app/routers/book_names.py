@@ -1,10 +1,7 @@
 from fastapi import APIRouter
-from book_recommender.exception.exception_handler import BookRecommenderException
-import sys
 from book_recommender.logger.log import logger
 from fastapi.responses import JSONResponse
-from fastapi.templating import Jinja2Templates
-import pickle
+from fastapi.exceptions import HTTPException
 from book_recommender.pipeline.Recommendation import RecommendationEngine
 
 router = APIRouter()
@@ -17,4 +14,4 @@ async def get_book_names():
         # print(book_names.values)
         return JSONResponse(content={"books": book_names.values.tolist()})  
     except Exception as e:
-        raise BookRecommenderException(e, sys) from e  # type:ignore
+        raise HTTPException(status_code=404,detail="File not found")

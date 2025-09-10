@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from book_recommender.pipeline.Recommendation import RecommendationPipeline
-from book_recommender.exception.exception_handler import BookRecommenderException
-import sys
 from book_recommender.logger.log import logger
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.exceptions import HTTPException
+
 
 
 templates = Jinja2Templates(directory="app/templates")
@@ -31,4 +31,4 @@ async def recommend_books(book: str):
         return JSONResponse(content={"recommendations": result})
 
     except Exception as e:
-        raise BookRecommenderException(e, sys) from e  # type:ignore
+        raise HTTPException(status_code=500,detail="Something went wrong")

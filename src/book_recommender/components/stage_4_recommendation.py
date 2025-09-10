@@ -47,7 +47,7 @@ class RecommendationEngine:
             for book in recommended_books:
                 poster_url = final_rating.loc[final_rating["Title"] == book, "ImageURL"].values[0]
                 poster_urls.append(poster_url)
-            logger.info(f"Recommended books for {book_name}: {recommended_books}")
+            logger.info(f"Recommended books for {book_name}")
             recommendation = {
                 "recommended_books": recommended_books,
                 "poster_urls": poster_urls

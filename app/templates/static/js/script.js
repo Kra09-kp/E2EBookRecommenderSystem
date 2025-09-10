@@ -47,11 +47,20 @@ function hideLoading() {
 async function fetchBooks() {
   try {
     const res = await fetch("/books");
-    data = await res.json();
-    books = data.books; // assuming response is { books: [...] }
-    console.log("Fetched books:", books.length);
+    const data = await res.json();
+    console.log("Books fetch response:", data.books ? data.books.length : data);
+    if (data.books && data.books.length > 0) {
+      books = data.books;
+    } else {
+      console.warn("Model not trained. Please train the model first.");
+      showLoading(["First, You need to train the Model:)"]);
+      setTimeout(hideLoading, 2000);
+    }
+
   } catch (err) {
     console.error("Error fetching books:", err);
+    showLoading(["⚠️ Failed to fetch books. Please check backend."]);
+    setTimeout(hideLoading, 2000);
   }
 }
 
@@ -128,41 +137,106 @@ function updateActive(items) {
   }
 });
 
-async function train(){
-  try{
-    showLoading([
-      "⚙️ Preparing dataset...",
-      "📚 Collecting book titles & authors...",
-      "🔍 Extracting features from descriptions...",
-      "🧠 Training the recommendation model...",
-      "📊 Evaluating accuracy & fine-tuning...",
-      "⏳ Almost done, polishing recommendations...",
-    ]);
 
-    // backend pe request bhejo jo jobs la raha hai
-    const res = await fetch(`/train`, { method: "POST" });
-    if (!res.ok) throw new Error("Something went wrong, Try again!");
+const steps = [
+  "Data Ingestion",
+  "Data Validation",
+  "Data Transformation",
+  "Model Training",
+];
 
-  } catch (err) {
-    hideLoading();
-    showLoading(["❌ Error: " + err.message]);
-    setTimeout(hideLoading, 3000);
+async function startTraining() {
+  // Show pipeline
+  document.getElementById("pipelineContainer").classList.remove("d-none");
+  const msgBox = document.getElementById("trainingMessage");
+  const eventSource = new EventSource("/train-stream");
 
-  } finally {
-    hideLoading(); // agar error hua toh modal band ho jaye
+  let manuallyClosed = false; // Track if we closed the connection
+  eventSource.onmessage = async function (event) {
+    const msg = event.data;
+    console.log("SSE message:", msg);
+    // Update steps based on message
+    steps.forEach((step, idx) => {
+      const stepEl = document.querySelector(`.pipeline-step[data-step="${idx}"]`);
+
+      if (!stepEl) return;
+
+      if (msg.includes(step + " started")) {
+        msgBox.classList.remove("d-none", "error");
+        stepEl.classList.add("active");
+        stepEl.classList.remove("completed", "error");
+        stepEl.querySelector(".circle").innerHTML = "*";
+      }
+      if (msg.includes(step + " completed")) {
+        stepEl.classList.remove("active", "error");
+        stepEl.classList.add("completed");
+        stepEl.querySelector(".circle").innerHTML ='<i class="bi bi-check-lg"></i>';
+      }
+      if (msg.includes(step + " failed")) {
+        console.log("Error message:", msg);
+        stepEl.classList.remove("active");
+        stepEl.classList.add("error");
+        stepEl.querySelector(".circle").innerHTML = '<i class="bi bi-x-lg"></i>';
+        manuallyClosed = true;
+        eventSource.close();
+        // Show error message
+        msgBox.textContent = "❌ Training failed! Please try again.";
+        msgBox.classList.remove("d-none", "success");
+        msgBox.classList.add("error", "show");
+
+      }
+    });
+
+    if (msg.includes("Training completed")) {
+      // console.log("SSE message:", msg);
+      manuallyClosed = true;
+      eventSource.close();
+      await fetchBooks(); // Refresh books after training
+      // remove the pipeline container
+      
+      // Show success message
+      msgBox.textContent = "✅ Training completed! Now you can do prediction.";
+      msgBox.classList.remove("d-none", "error");
+      msgBox.classList.add("success", "show");
+
+      // Hide pipeline after short delay
+      setTimeout(() => {
+        document.getElementById("pipelineContainer").classList.add("d-none");
+      }, 5000);
+    }
+  };
+    
+  eventSource.onerror = (err) => {
+  if (manuallyClosed) {
+    console.log("SSE closed intentionally.");
+    return;
   }
+    console.error("SSE failed:", err);
+    eventSource.close();
+    msgBox.textContent = "⚠️ Connection lost. Please try again.";
+    msgBox.classList.remove("d-none", "success");
+    msgBox.classList.add("error", "show");
+};
 }
 
-/* --------- fetch & display recommendations (example) --------- */   
+/* --------- fetch & display recommendations (example) --------- */
 
   // Fetch top 5 recommendations
 // Fetch recommendations when a book is selected
 async function fetchRecommendations(book) {
   try {
+    const msgBox = document.getElementById("trainingMessage");
+    msgBox.classList.add("show");
+    msgBox.textContent = "Fetching recommendations...";
+    msgBox.classList.remove("d-none");
+    msgBox.classList.add("success", "show");
     const res = await fetch(`/recommend?book=${encodeURIComponent(book)}`);
     const data = await res.json();
     console.log("Recommendations:", data);
+    msgBox.classList.remove("show");
+    msgBox.classList.add("d-none");
 
+    // Display recommendations
     const recommendationsDiv = document.getElementById("recommendations");
     recommendationsDiv.innerHTML = " <div><h5>Here is the Recommended Books: </h5></div>";
 
@@ -179,8 +253,7 @@ async function fetchRecommendations(book) {
             <div class="overlay-text">${item.title}</div>
           </div>
         </div>
-      </div>
-`;
+      </div>`;
 
 
       recommendationsDiv.appendChild(col);

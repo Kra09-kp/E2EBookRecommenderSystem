@@ -51,8 +51,6 @@
   object-fit: contain; /* show full poster */
 }
 
-
-
 .img-container:hover img {
   transform: scale(1.1);
 }
@@ -79,4 +77,93 @@
 .overlay-text {
   font-size: 0.9rem;
   font-weight: bold;
+}
+
+.pipeline-steps-vertical {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  position: relative;
+}
+
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.pipeline-step .circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #dee2e6;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Connecting line */
+.pipeline-step::after {
+  content: "";
+  position: absolute;
+  top: 36px;
+  left: 14px;
+  width: 3px;
+  height: 100%;
+  background: #dee2e6;
+}
+.pipeline-step:last-child::after {
+  display: none;
+}
+
+/* Active → spinner */
+.pipeline-step.active .circle {
+  border: 3px solid #075dce;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+/* Completed */
+.pipeline-step.completed .circle {
+  background: #28a745;
+  border-color: #dee2e6;
+  color: white;
+  animation: popIn 0.3s ease;
+}
+
+/* Error */
+.pipeline-step.error .circle {
+  background: #dc3545;
+  border-color: #dee2e6;
+  color: white;
+  animation: popIn 0.3s ease;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Message fade-in */
+#trainingMessage {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+#trainingMessage.show {
+  opacity: 1;
+}
+#trainingMessage.success {
+  color: #28a745; /* green */
+}
+#trainingMessage.error {
+  color: #dc3545; /* red */
 }

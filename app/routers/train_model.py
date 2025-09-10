@@ -8,15 +8,8 @@ from fastapi.responses import StreamingResponse
 
 
 templates = Jinja2Templates(directory="app/templates")
-steps = [
-    "Data Ingestion",
-    "Data Validation",
-    "Data Transformation",
-    "Model Training"
-]
-
 router = APIRouter()
-training_pipeline = TrainingPipeline(steps)
+training_pipeline = TrainingPipeline()
 
 @router.get("/train-stream")
 async def train_model():

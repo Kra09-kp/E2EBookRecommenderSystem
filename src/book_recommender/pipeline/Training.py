@@ -7,12 +7,11 @@ from book_recommender.components.stage_3_model_training import ModelTrainer
 import sys
 
 class TrainingPipeline:
-    def __init__(self,steps):
+    def __init__(self):
         self.data_ingestion = DataIngestion()
         self.data_validation = DataValidation()
         self.data_transformation = DataTransformation()
         self.model_trainer = ModelTrainer()
-        self.steps = steps
         self.methods = {
             "Data Ingestion": self.data_ingestion.initiate_data_ingestion,
             "Data Validation":self.data_validation.initiate_data_validation,
@@ -22,20 +21,19 @@ class TrainingPipeline:
      
     def run(self):
         logger.info(f"{'='*20} Training pipeline started {'='*20}")
-        for name in self.steps:
+        for name, method in self.methods.items():
             try:
                 logger.info(f"Starting {name}...")
                 yield f"data: {name} started 🚀\n\n"
 
-                self.methods[name]()  # run the actual step
+                method()  # run the actual step
 
                 logger.info(f"{name} completed")
                 yield f"data: {name} completed ✅\n\n"
             except Exception as e:
-                yield f"data: {name} failed ❌"
+                yield f"data: {name} failed ❌\n\n"
                 raise BookRecommenderException(e, sys) from e #type:ignore
             
-         
         logger.info(f"{'='*20} Training pipeline completed {'='*20}")
         yield "Training completed 🎉\n\n"
         

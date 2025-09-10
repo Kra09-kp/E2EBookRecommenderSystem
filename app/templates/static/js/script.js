@@ -162,7 +162,8 @@ async function startTraining() {
       if (!stepEl) return;
 
       if (msg.includes(step + " started")) {
-        msgBox.classList.remove("d-none", "error");
+        msgBox.classList.remove("show", "error");
+        msgBox.classList.add("d-none");
         stepEl.classList.add("active");
         stepEl.classList.remove("completed", "error");
         stepEl.querySelector(".circle").innerHTML = "*";
@@ -202,7 +203,7 @@ async function startTraining() {
       // Hide pipeline after short delay
       setTimeout(() => {
         document.getElementById("pipelineContainer").classList.add("d-none");
-      }, 5000);
+      }, 3000);
     }
   };
     

@@ -237,10 +237,19 @@ document.getElementById("useDefaultBtn").addEventListener("click", async () => {
     msgBox.textContent = "✅ Default model is ready!";
     msgBox.classList.remove("d-none", "error");
     msgBox.classList.add("success", "show");
+    // Hide message after 3 seconds
+    setTimeout(() => {
+      msgBox.classList.remove("show");
+      msgBox.classList.add("d-none");
+    }, 3000);
   } else {
     msgBox.textContent = "⚠️ Failed to load default model. Try Again.";
     msgBox.classList.remove("d-none", "success");
     msgBox.classList.add("error", "show");
+    setTimeout(() => {
+      msgBox.classList.remove("show");
+      msgBox.classList.add("d-none");
+    }, 3000);
   }
 });
 

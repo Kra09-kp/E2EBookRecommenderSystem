@@ -53,13 +53,13 @@ async function fetchBooks() {
       books = data.books;
     } else {
       console.warn("Model not trained. Please train the model first.");
-      showLoading(["First, You need to train the Model:)"]);
-      setTimeout(hideLoading, 2000);
+      showLoading(["⚠️ Model not trained\n👉 Click “Use Default” to load model,\n OR \n🛠️ Train your own."]);
+      setTimeout(hideLoading,4000);
     }
 
   } catch (err) {
     console.error("Error fetching books:", err);
-    showLoading(["⚠️ Failed to fetch books. Please check backend."]);
+    showLoading(["⚠️ Failed to fetch books. Try Again."]);
     setTimeout(hideLoading, 2000);
   }
 }
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentIndex = -1; // Track which suggestion is active
 
   bookInput.addEventListener("input", () => {
-    const query = bookInput.value.toLowerCase();
+    const query = bookInput.value.toLowerCase().trim();
     suggestions.innerHTML = "";
     currentIndex = -1;
 
@@ -83,7 +83,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       book.toLowerCase().includes(query)
     ).slice(0, 7);
 
-    if (filtered.length === 0) return;
+    if (filtered.length === 0) {
+      msg = "No matches found, try another.";
+      const li = document.createElement("li");
+      li.classList.add("list-group-item", "list-group-item-action", "disabled");
+      li.textContent = msg;
+      suggestions.appendChild(li);
+      return;
+    };
 
     filtered.forEach(book => {
       const li = document.createElement("li");
@@ -220,7 +227,24 @@ async function startTraining() {
 };
 }
 
-/* --------- fetch & display recommendations (example) --------- */
+
+document.getElementById("useDefaultBtn").addEventListener("click", async () => {
+  const msgBox = document.getElementById("trainingMessage");
+  const res = await fetch("/use-default", { method: "POST" });
+  const data = await res.json();
+  if (data.status === "ok") {
+    await fetchBooks(); // Refresh books after loading default
+    msgBox.textContent = "✅ Default model is ready!";
+    msgBox.classList.remove("d-none", "error");
+    msgBox.classList.add("success", "show");
+  } else {
+    msgBox.textContent = "⚠️ Failed to load default model. Try Again.";
+    msgBox.classList.remove("d-none", "success");
+    msgBox.classList.add("error", "show");
+  }
+});
+
+
 
   // Fetch top 5 recommendations
 // Fetch recommendations when a book is selected
@@ -249,7 +273,10 @@ async function fetchRecommendations(book) {
      
       <div class="card shadow-lg border-0 h-100 rounded-4 overflow-hidden recommendation-card">
         <div class="img-container position-relative">
+          <a href="https://www.google.com/search?q=${encodeURIComponent(item.title)}" target="_blank">
           <img src="${item.poster}" class="card-img-top" alt="${item.title}">
+        </a>
+
           <div class="overlay">
             <div class="overlay-text">${item.title}</div>
           </div>
@@ -261,5 +288,7 @@ async function fetchRecommendations(book) {
     });
   } catch (err) {
     console.error("Error fetching recommendations:", err);
+    showLoading(["⚠️ Failed to fetch recommendations. Try Again."]);
+    setTimeout(hideLoading, 2000);  
   }
 }
